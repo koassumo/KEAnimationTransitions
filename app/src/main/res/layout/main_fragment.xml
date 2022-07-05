@@ -5,11 +5,42 @@
     android:layout_height="match_parent"
     android:id="@+id/my_container_anim_3">
 
-    <androidx.appcompat.widget.AppCompatButton
-        android:id="@+id/btn_333"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="start|top"
-        android:text="Path" />
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
 
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/btn_333"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="start|top"
+            android:text="Path" />
+
+        <GridLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:columnCount="30"
+            android:rowCount="45"
+            android:orientation="horizontal"
+            android:gravity="fill_horizontal"
+            android:id="@+id/my_container_anim_grid">
+
+<!--            <androidx.appcompat.widget.AppCompatButton-->
+<!--                android:id="@+id/btn_2"-->
+<!--                android:layout_width="wrap_content"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:text="gri" />-->
+
+<!--            <Button-->
+<!--                android:id="@+id/btn_grid"-->
+<!--                android:layout_width="wrap_content"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:text="grid"-->
+<!--                android:layout_columnSpan="3"-->
+<!--                android:layout_rowSpan="3"-->
+<!--                />-->
+
+        </GridLayout>
+    </LinearLayout>
 </FrameLayout>

@@ -1,18 +1,21 @@
 package com.example.keanimationtransitions.ui.main
 
-import androidx.lifecycle.ViewModelProvider
+import android.graphics.Color
 import android.os.Bundle
-import android.view.Gravity
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.FrameLayout
+import android.widget.*
+import androidx.core.view.ViewCompat
+import androidx.fragment.app.Fragment
+import androidx.lifecycle.ViewModelProvider
 import androidx.transition.ArcMotion
 import androidx.transition.ChangeBounds
 import androidx.transition.TransitionManager
 import com.example.keanimationtransitions.R
 import com.example.keanimationtransitions.databinding.MainFragmentBinding
+import android.widget.AdapterView.OnItemClickListener
+
 
 class MainFragment : Fragment() {
 
@@ -49,34 +52,68 @@ class MainFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         viewModel = ViewModelProvider(this).get(MainViewModel::class.java)
 
-        //
-        binding.btn333.setOnClickListener {
-            val changeBounds = ChangeBounds()
-            changeBounds.setPathMotion (ArcMotion())    // add "arch" to path
-            changeBounds.duration = 5000                // speed
 
-            // .beginDelayedTransition - for viewGroup
-            // .go - for scene
-            TransitionManager.beginDelayedTransition (
-                binding.myContainerAnim3,               // arg1: container must be named in layout file
-                changeBounds                            // arg2: action or action set
-            )
-            // Arg2 LIST:
-            // - Fade
-            // - ChangeBounds
-            // - Explode
-            // - Default AutoTransition (no arg2) - set of: FadeOut, ChangeBounds, Fade
+        val myTitles: MutableList<String> = ArrayList()
+        for (i: Int in 0..444) {
+            //myTitles.add(String.format("Item %d   ", i+1))
+            myTitles.add(String.format("0"))
+        }
+        myTitles.add(3, "1")
+        createViews(binding.myContainerAnimGrid, myTitles)
+        //renderViews(myTitles, 5)
+
+//        val gridviewOnItemClickListener =
+//            OnItemClickListener { parent, v, position, id -> // выводим номер позиции
+//                //mSelectText.setText(position.toString())
+//            }
+
+    }
+
+    private fun renderViews (myTitles: MutableList<String>, positionCar: Int) {
+
+        Toast.makeText(requireContext(), "index: $positionCar", Toast.LENGTH_SHORT).show()
+        val changeBounds = ChangeBounds()
+        changeBounds.setPathMotion (ArcMotion())    // add "arch" to path
+        changeBounds.duration = 2000                // speed
+
+        TransitionManager.beginDelayedTransition(binding.myContainerAnimGrid, changeBounds)
+
+        // второе состояние - пересоздание вьюшек
+        val buffer = myTitles[53]
+        myTitles[53] = myTitles[3]
+        myTitles[3] = buffer
+
+        createViews(binding.myContainerAnimGrid, myTitles)
+
+//            toRightAnimation = !toRightAnimation
+//
+//            val params : FrameLayout.LayoutParams = binding.btn333.layoutParams as FrameLayout.LayoutParams
+//            params.gravity = if (toRightAnimation)
+//                Gravity.END or Gravity.BOTTOM
+//            else
+//                Gravity.START or Gravity.TOP
+//            binding.btn333.layoutParams = params
+    }
 
 
+    private fun createViews(layout: ViewGroup, titles: MutableList <String>) {
+        layout.removeAllViews()
+        for (index in titles.indices) {
+            val textView = TextView(requireContext())
+            textView.setBackgroundColor(Color.BLUE)
 
-            toRightAnimation = !toRightAnimation
+            textView.text = "0"
+            if (titles[index] == "0") textView.setTextColor(Color.BLUE)
+            else textView.setTextColor(Color.YELLOW)
+            //textView.gravity = Gravity.CENTER_HORIZONTAL
+            textView.setOnClickListener {
+                renderViews(titles, index)
+                //Toast.makeText(requireContext(), "layoutPosition: ${textView.layo}", Toast.LENGTH_SHORT).show()
+            }
 
-            val params : FrameLayout.LayoutParams = binding.btn333.layoutParams as FrameLayout.LayoutParams
-            params.gravity = if (toRightAnimation)
-                Gravity.END or Gravity.BOTTOM
-            else
-                Gravity.START or Gravity.TOP
-            binding.btn333.layoutParams = params
+            ViewCompat.setTransitionName(textView, titles[index])
+            layout.addView(textView)
+
         }
     }
 }
